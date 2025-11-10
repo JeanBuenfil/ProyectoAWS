@@ -19,9 +19,11 @@ public class AlumnoBodyDTO {
     private Integer id;
 
     @NotBlank
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüñÑ\\s]+$")
     private String nombres;
 
     @NotBlank
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+$")
     private String apellidos;
 
     @NotBlank

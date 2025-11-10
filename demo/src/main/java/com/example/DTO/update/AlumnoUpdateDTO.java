@@ -10,7 +10,10 @@ import lombok.Setter;
 @Getter
 public class AlumnoUpdateDTO {
 
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüñÑ\\s]+$")
     private String nombres;
+
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüñÑ\\s]+$")
     private String apellidos;
 
     @Pattern(regexp = "^A\\d+$")
