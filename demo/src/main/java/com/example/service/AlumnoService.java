@@ -79,23 +79,32 @@ public class AlumnoService {
         this.alumnoRepository.deleteById(id);
     }
 
-    public void enviarEmail(Alumno alumno){
-        String subject = "Información de alumno";
+public void enviarEmail(Alumno alumno) {
+    String subject = "Información de alumno";
 
-        String messaje = """
-                <html>
-                    <body style="font-family: Arial, sans-serif;">
+    String mensajeHtml = """
+            <html>
+                <body style="font-family: Arial, sans-serif;">
 
-                        <h3>Detalles del alumno:</h3>
-                        <p><strong>Nombres:</strong> %s</p>
-                        <p><strong>Apellidos:</strong> %s</p>
-                        <p><strong>Promedio:</strong> %s</p>
+                    <h3>Detalles del alumno:</h3>
+                    <p><strong>Nombres:</strong> %s</p>
+                    <p><strong>Apellidos:</strong> %s</p>
+                    <p><strong>Promedio:</strong> %s</p>
 
-                    </body>
-                </html>
-                """.formatted(alumno.getNombres(), alumno.getApellidos(), alumno.getPromedio());
+                </body>
+            </html>
+            """.formatted(alumno.getNombres(), alumno.getApellidos(), alumno.getPromedio());
 
-        snsService.publishMessage(subject, messaje);
+    String jsonMessage = """
+            {
+              "default": "Detalles del alumno",
+              "email": "%s"
+            }
+            """.formatted(mensajeHtml.replace("\"", "\\\""));
+
+    snsService.publishMessage(subject, jsonMessage);
     }
-    
+
 }
+    
+
