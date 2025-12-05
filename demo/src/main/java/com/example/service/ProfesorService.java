@@ -1,55 +1,49 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.DTO.body.ProfesorBodyDTO;
 import com.example.DTO.update.ProfesorUpdateDTO;
 import com.example.model.Profesor;
+import com.example.repository.ProfesorRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProfesorService {
     
-    private final List<Profesor> profesores = new ArrayList<>();
+    @Autowired
+    ProfesorRepository profesorRepository;
 
     public Profesor crearProfesor(ProfesorBodyDTO profesorDTO){
-        Profesor profesor = crearProfesorDesdeDTO(profesorDTO);
-        profesores.add(profesor);
-        return profesor;
+        Profesor profesor = Profesor.builder()
+        .numeroEmpleado(profesorDTO.getNumeroEmpleado())
+        .nombres(profesorDTO.getNombres())
+        .apellidos(profesorDTO.getApellidos())
+        .horasClase(profesorDTO.getHorasClase())
+        .build();
+        return this.profesorRepository.save(profesor);
     }
 
-    private Profesor crearProfesorDesdeDTO(ProfesorBodyDTO profesorDTO){
-        return new Profesor(
-            profesorDTO.getId(),
-            profesorDTO.getNumeroEmpleado(),
-            profesorDTO.getNombres(),
-            profesorDTO.getApellidos(),
-            profesorDTO.getHorasClase()
-        );
-    }
+
 
     public List<Profesor> encontrarProfesores(){
-        return this.profesores;
+        return this.profesorRepository.findAll();
     }
 
     public Profesor encontrarProfesorPorId(int id){
-        Profesor profesor = this.encontrarId(id).orElse(null);
-        return profesor;
+        return this.profesorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    private Optional<Profesor> encontrarId(int id){
-        return profesores.stream()
-        .filter(a -> a.getId() == id).findFirst();
-    }
+
 
     public Profesor actualizarProfesor(int id, ProfesorUpdateDTO profesorUpdateDTO){
         Profesor profesor = encontrarProfesorPorId(id);
         this.actualizarProfesorDesdeDTO(profesor, profesorUpdateDTO);
+        this.profesorRepository.save(profesor);
         return profesor;
 
     }
@@ -71,10 +65,10 @@ public class ProfesorService {
             profesor.setHorasClase(profesorUpdateDTO.getHorasClase());
         }          
 
+
     }
 
     public void eliminarProfesor(int id){
-        Profesor profesor = this.encontrarId(id).orElseThrow(() -> new EntityNotFoundException());
-        profesores.remove(profesor);
+        this.profesorRepository.deleteById(id);;
     }
 }

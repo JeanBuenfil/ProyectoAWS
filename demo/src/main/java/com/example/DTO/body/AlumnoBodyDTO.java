@@ -15,8 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AlumnoBodyDTO {
 
-    @NotNull
-    private Integer id;
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüñÑ\\s]+$")
@@ -27,6 +25,9 @@ public class AlumnoBodyDTO {
     private String apellidos;
 
     @NotBlank
+    private String password;
+
+    @NotBlank
     @Pattern(regexp = "^A\\d+$", message = "La matrícula debe empezar con 'A'")
     private String matricula;
 
@@ -34,4 +35,5 @@ public class AlumnoBodyDTO {
     @Max(value = 100)
     @NotNull
     private Double promedio;
+
 }
