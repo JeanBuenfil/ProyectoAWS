@@ -82,27 +82,14 @@ public class AlumnoService {
 public void enviarEmail(Alumno alumno) {
     String subject = "Información de alumno";
 
-    String mensajeHtml = """
-            <html>
-                <body style="font-family: Arial, sans-serif;">
-
-                    <h3>Detalles del alumno:</h3>
-                    <p><strong>Nombres:</strong> %s</p>
-                    <p><strong>Apellidos:</strong> %s</p>
-                    <p><strong>Promedio:</strong> %s</p>
-
-                </body>
-            </html>
+    String mensaje = """
+                    Detalles del alumno:
+                    Nombres: %s
+                    Apellidos: %s
+                    Promedio: %s
             """.formatted(alumno.getNombres(), alumno.getApellidos(), alumno.getPromedio());
 
-    String jsonMessage = """
-            {
-              "default": "Detalles del alumno",
-              "email": "%s"
-            }
-            """.formatted(mensajeHtml.replace("\"", "\\\""));
-
-    snsService.publishMessage(subject, jsonMessage);
+    snsService.publishMessage(subject, mensaje);
     }
 
 }
