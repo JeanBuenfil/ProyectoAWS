@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.DTO.body.ProfesorBodyDTO;
 import com.example.DTO.update.ProfesorUpdateDTO;
-import com.example.exception.IdProfesorDuplicadoException;
 import com.example.model.Profesor;
 import com.example.service.ProfesorService;
 
@@ -36,9 +35,6 @@ public class ProfesorController {
 
     @PostMapping
     public ResponseEntity<Profesor> crearProfesor(@Valid @RequestBody ProfesorBodyDTO data) {
-        if(profesorService.encontrarProfesorPorId(data.getId()) != null){
-            throw new IdProfesorDuplicadoException();
-        }
         Profesor profesor = profesorService.crearProfesor(data);
         return new ResponseEntity<Profesor>(profesor, HttpStatus.CREATED);
     }
@@ -66,7 +62,9 @@ public class ProfesorController {
     }
  
     @DeleteMapping("/{id}")
-    public void eliminarProfesor(@PathVariable int id){
+    public ResponseEntity<Profesor> eliminarProfesor(@PathVariable int id){
+        Profesor profesor = profesorService.encontrarProfesorPorId(id);
         profesorService.eliminarProfesor(id);
+        return new ResponseEntity<Profesor>(profesor, HttpStatus.OK);
     }
 }

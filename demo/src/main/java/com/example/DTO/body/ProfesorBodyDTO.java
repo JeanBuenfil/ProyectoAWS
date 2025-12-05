@@ -13,8 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfesorBodyDTO {
 
-    @NotNull
-    private Integer id;
+
 
     @NotNull
     private Integer numeroEmpleado;

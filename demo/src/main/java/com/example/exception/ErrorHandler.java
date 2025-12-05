@@ -1,12 +1,14 @@
 package com.example.exception;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -60,5 +62,14 @@ public class ErrorHandler {
         return new ErrorMensaje(
             "Se ingresó un campo no válido o no se ingresaron todos los campos"
         );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+        Map<String, Object> response = Map.of(
+            "message" ,"sesión inválida"
+        );
+        return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
     }
 }
