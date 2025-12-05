@@ -22,7 +22,6 @@ public class SnsService {
                 .topicArn(topicArn)
                 .subject(subject)
                 .message(message)
-                .messageStructure("json")
                 .build();
 
         snsClient.publish(request);
